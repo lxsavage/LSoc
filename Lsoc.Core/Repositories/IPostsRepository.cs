@@ -7,4 +7,5 @@ public interface IPostsRepository : IRepository<Post>
     Task<int> CreatePostAsync(Post post);
     Task EditPostByIdAsync(int id, Post modified);
     Task DeletePostByIdAsync(int id);
+    Task<List<Post?>> GetTopPostsAsync(int count);
 }

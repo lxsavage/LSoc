@@ -39,4 +39,9 @@ public class PostsService : IPostsService
     {
         await _unitOfWork.Posts.DeletePostByIdAsync(id);
     }
+
+    public async Task<List<Post?>> GetTopPostsAsync(int count = 1)
+    {
+        return await _unitOfWork.Posts.GetTopPostsAsync(count);
+    }
 }

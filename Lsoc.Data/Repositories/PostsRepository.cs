@@ -39,5 +39,13 @@ public class PostsRepository : Repository<Post>, IPostsRepository
         await LsocDbContext.SaveChangesAsync();
     }
 
+    public async Task<List<Post?>> GetTopPostsAsync(int count)
+    {
+        return await LsocDbContext.Posts
+            .AsQueryable()
+            .Take(count)
+            .ToListAsync();
+    }
+
     private LsocDbContext LsocDbContext => Context as LsocDbContext;
 }

@@ -9,4 +9,5 @@ public interface IPostsService
     Task<int> CreatePostAsync(CreatePostViewModel post);
     Task EditPostAsync(int id, CreatePostViewModel post);
     Task DeletePostAsync(int id);
+    Task<List<Post?>> GetTopPostsAsync(int count = 1);
 }
