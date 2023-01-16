@@ -6,7 +6,7 @@ namespace Lsoc.Data;
 
 public class LsocDbContext : DbContext
 {
-    public DbSet<Post> Posts { get; set; }
+    public DbSet<Post?> Posts { get; set; }
     
     public LsocDbContext(DbContextOptions<LsocDbContext> options)
         :base(options)

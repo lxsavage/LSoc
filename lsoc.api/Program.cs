@@ -1,11 +1,17 @@
+using Lsoc.API.Mapping;
 using Lsoc.Core;
+using Lsoc.Core.Services;
 using Lsoc.Data;
+using Lsoc.Services.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddAutoMapper(typeof(LsocMappingProfile));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IPostsService, PostsService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
