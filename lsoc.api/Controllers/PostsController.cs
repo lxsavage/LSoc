@@ -21,20 +21,26 @@ public class PostsController : ControllerBase
         return await _postsService.CreatePostAsync(post);
     }
     
-    [HttpGet]
-    public async Task<Post?> GetPost([FromQuery] int id)
+    [HttpGet("{id:int}")]
+    public async Task<Post?> GetPost([FromRoute] int id)
     {
         return await _postsService.GetPostAsync(id);
     }
 
-    [HttpPatch]
-    public async Task EditPost([FromQuery] int id, [FromBody] CreatePostViewModel post)
+    [HttpGet]
+    public async Task<List<Post?>> GetPosts([FromQuery] int count = 1000)
+    {
+        return await _postsService.GetTopPostsAsync(count);
+    }
+
+    [HttpPatch("{id:int}")]
+    public async Task EditPost([FromRoute] int id, [FromBody] CreatePostViewModel post)
     {
         await _postsService.EditPostAsync(id, post);
     }
 
-    [HttpDelete]
-    public async Task DeletePost([FromQuery] int id)
+    [HttpDelete("{id:int}")]
+    public async Task DeletePost([FromRoute] int id)
     {
         await _postsService.DeletePostAsync(id);
     }
