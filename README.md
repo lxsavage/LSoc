@@ -2,6 +2,12 @@
 
 ###### Please note that this project is currently a work-in-progress, and does not currently reflect the full functionality intended for the final version
 
+## Project Purpose
+
+This project was created as a way for me to learn how to use newer Vue 3-based technologies, as I have not yet used Vue 3 beyond basic example code in an actual project, and I wanted to be able to learn by use.
+
+This project aims to implement a basic social media message board-style forum that can be hosted on a server for both local wifi messaging, all the way up to being scalable to intranet application-level uses.
+
 ## Running
 
 To execute the application, the backend and frontend need to both be running, then navigate to the frontend URL (http://localhost:8080/):
@@ -25,12 +31,6 @@ To host the frontend, simply run the following command within the Lsoc.UI folder
 ```bash
 $ yarn run dev
 ```
-
-## Project Purpose
-
-This project was created as a way for me to learn how to use newer Vue 3-based technologies, as I have not yet used Vue 3 beyond basic example code in an actual project, and I wanted to be able to learn by use.
-
-This project aims to implement a basic social media message board-style forum that can be hosted on a server for both local wifi messaging, all the way up to being scalable to intranet application-level uses.
 
 ## Technology Used
 
