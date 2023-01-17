@@ -11,12 +11,14 @@
   },
   "dependencies": {
     "flowbite": "^1.6.2",
+    "mande": "^2.0.3",
     "pinia": "^2.0.28",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
     "primevue": "^3",
     "vue": "^3.2.45",
-    "vue-router": "4"
+    "vue-router": "4",
+    "vue-sidebar-menu": "^5.2.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",

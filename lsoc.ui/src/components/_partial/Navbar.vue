@@ -1,23 +1,42 @@
 <template>
-  <Menubar :model="items" class="sticky">
-  </Menubar>
+  <SidebarMenu collapsed hide-toggle :menu="menu"></SidebarMenu>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import Menubar from 'primevue/menubar'
-const name = 'Navigation'
+import { SidebarMenu } from 'vue-sidebar-menu'
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 
-const items = ref([
+// Placeholder: replace after implementing authentication
+const authenticated: boolean = false
+
+// Min w: 1110px
+const menu = [
   {
-    label: 'Dashboard',
-    icon: 'pi pi-fw pi-file',
-    url: '/#/'
+    header: 'Lsoc'
   },
   {
-    label: 'About',
-    icon: 'pi pi-fw pi-file',
-    url: '/#/about'
+    title: 'Timeline',
+    icon: 'pi pi-fw pi-hashtag',
+    href: '/'
+  },
+  {
+    title: 'About',
+    icon: 'pi pi-fw pi-info-circle',
+    href: '/about'
   }
-])
+]
+
+if (authenticated) {
+  menu.push({
+    title: 'Log Out',
+    icon: 'pi pi-fw pi-sign-out',
+    href: '/logout'
+  })
+} else {
+  menu.push({
+    title: 'Log In',
+    icon: 'pi pi-fw pi-sign-in',
+    href: '/login'
+  })
+}
 </script>

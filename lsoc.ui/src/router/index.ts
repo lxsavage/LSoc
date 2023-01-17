@@ -1,4 +1,3 @@
-// @ts-ignore
 export default [
     {
         path: '/',
@@ -9,5 +8,10 @@ export default [
         path: '/about',
         name: 'About',
         component: () => import('../pages/About.vue')
+    },
+    {
+        path: '/login',
+        name: 'Sign In',
+        component: () => import('../pages/Login.vue')
     }
 ]

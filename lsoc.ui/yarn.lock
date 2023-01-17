@@ -485,6 +485,11 @@ magic-string@^0.25.7:
   dependencies:
     sourcemap-codec "^1.4.8"
 
+mande@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/mande/-/mande-2.0.3.tgz#48288ea2089a21af30891590d96cdfba5c0352ed"
+  integrity sha512-rWIgfcpx6nlUHDOQbHu9dSYFxib3hV85lo7KnoA7T+uBRLiSM6dy00M/+NABNkDCVgJNcm8Ib4nobLfERhrvxA==
+
 mini-svg-data-uri@^1.4.3:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/mini-svg-data-uri/-/mini-svg-data-uri-1.4.4.tgz#8ab0aabcdf8c29ad5693ca595af19dd2ead09939"
@@ -674,6 +679,11 @@ vue-router@4:
   integrity sha512-DYWYwsG6xNPmLq/FmZn8Ip+qrhFEzA14EI12MsMgVxvHFDYvlr4NXpVF5hrRH1wVcDP8fGi5F4rxuJSl8/r+EQ==
   dependencies:
     "@vue/devtools-api" "^6.4.5"
+
+vue-sidebar-menu@^5.2.5:
+  version "5.2.5"
+  resolved "https://registry.yarnpkg.com/vue-sidebar-menu/-/vue-sidebar-menu-5.2.5.tgz#26815a76fed665491ebc7e26d2b52533422bb8b5"
+  integrity sha512-rEn1YsDYqYUGD8wGrNLbWlYimP8McpzpG7Pft7G/8eYtJUYkPtzRcPEUbWOyRm1WtyC3cmtdcRea8wjJNLfHrg==
 
 vue-template-compiler@^2.7.14:
   version "2.7.14"

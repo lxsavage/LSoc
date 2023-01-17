@@ -1,16 +1,29 @@
 <template>
-  <h1 class="text-2xl">{{ name }}</h1>
-  <p>{{ message }}</p>
-  <p>{{ count }}</p>
-  <Button @click="increment">Click me!</Button>
+  <h1>{{ name }}</h1>
+
+  <ProgressBar v-if="postsLoading" mode="indeterminate" style="height: .5em;"></ProgressBar>
+  <TimelineView :posts="loadedPosts"></TimelineView>
+  <Divider></Divider>
 </template>
 
 <script setup lang="ts">
-import { useHelloWorldStore } from '../store/HelloWorldStore'
-import { storeToRefs } from "pinia";
-import Button from 'primevue/button'
+import { onBeforeMount } from "vue";
+import { usePostsStore } from '../store/PostsStore'
+import { storeToRefs } from 'pinia'
 
-const hwStore = useHelloWorldStore()
-const { message, count } = storeToRefs(hwStore)
-const { increment } = hwStore
+import TimelineView from '../components/posts/TimelineView.vue'
+
+import Divider from 'primevue/divider'
+import ProgressBar from 'primevue/progressbar'
+
+const name = 'Your Timeline'
+
+const postsStore = usePostsStore()
+const { loadedPosts, postsLoading } = storeToRefs(postsStore)
+const { fetchPosts } = postsStore
+
+// Fetch all posts automatically upon navigating to the dashboard
+onBeforeMount(async () => {
+  await fetchPosts()
+})
 </script>

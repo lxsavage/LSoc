@@ -43,6 +43,7 @@ public class PostsRepository : Repository<Post>, IPostsRepository
     {
         return await LsocDbContext.Posts
             .AsQueryable()
+            .OrderByDescending(m => m.DateModified)
             .Take(count)
             .ToListAsync();
     }
