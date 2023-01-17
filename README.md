@@ -1,5 +1,7 @@
 # Lsoc: A Social Media Concept
 
+###### Please note that this project is currently a work-in-progress, and does not currently reflect the full functionality intended for the final version
+
 ## Running
 
 To execute the application, the backend and frontend need to both be running, then navigate to the frontend URL (http://localhost:8080/):
