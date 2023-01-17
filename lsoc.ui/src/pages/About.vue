@@ -1,5 +1,6 @@
 <template>
   <h1>{{ name }}</h1>
+  <a href="https://github.com/lxsavage/LSoc">Github Project</a>
   <h2>Purpose of this Project</h2>
   <p>
     This project was created as a way for me to learn how to use newer Vue

@@ -1,27 +1,31 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import App from './App.vue'
+// Vue app
+import { createApp } from "vue";
+import App from "./App.vue";
 
-import './style.scss'
-import PrimeVue from 'primevue/config'
+// Router
+import { createRouter, createWebHistory, Router } from "vue-router";
+import routes from "./router/index";
 
-import 'primevue/resources/themes/saga-blue/theme.css';
-import 'primevue/resources/primevue.min.css';
-import 'primeicons/primeicons.css';
+// Store
+import { createPinia, Pinia } from "pinia";
 
+// Styling
+import PrimeVue from "primevue/config";
+import "primevue/resources/themes/saga-blue/theme.css";
+import "primevue/resources/primevue.min.css";
+import "primeicons/primeicons.css";
+import "./style.scss";
 
-import { createRouter, createWebHashHistory } from 'vue-router'
-import routes from './router/index'
+// Initialize plugins
+const app: App = createApp(App);
+const pinia: Pinia = createPinia();
+const router: Router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
 
-const router = createRouter({
-    history: createWebHashHistory(),
-    routes
-})
-
-const pinia = createPinia()
-const app = createApp(App)
-
-app.use(router)
-app.use(pinia)
-app.use(PrimeVue)
-app.mount('#app')
+// Include plugins in app, then mount the app to the webpage
+app.use(router);
+app.use(pinia);
+app.use(PrimeVue);
+app.mount("#app");
