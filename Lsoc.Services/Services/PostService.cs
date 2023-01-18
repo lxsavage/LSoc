@@ -6,12 +6,12 @@ using Lsoc.Core.ViewModels;
 
 namespace Lsoc.Services.Services;
 
-public class PostsService : IPostsService
+public class PostService : IPostsService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public PostsService(IUnitOfWork unitOfWork, IMapper mapper)
+    public PostService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
@@ -40,7 +40,7 @@ public class PostsService : IPostsService
         await _unitOfWork.Posts.DeletePostByIdAsync(id);
     }
 
-    public async Task<List<Post?>> GetTopPostsAsync(int count = 1)
+    public async Task<List<Post?>> GetTopPostsAsync(int count)
     {
         return await _unitOfWork.Posts.GetTopPostsAsync(count);
     }

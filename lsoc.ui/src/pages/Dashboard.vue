@@ -7,22 +7,19 @@
     style="height: 0.5em"
   ></ProgressBar>
   <TimelineView :posts="loadedPosts"></TimelineView>
-  <Divider></Divider>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { onBeforeMount } from "vue";
-import { usePostsStore } from "../store/PostsStore";
+import { usePostStore } from "../store/PostStore";
 import { storeToRefs } from "pinia";
 
 import TimelineView from "../components/posts/TimelineView.vue";
-
-import Divider from "primevue/divider";
 import ProgressBar from "primevue/progressbar";
 
 const name = "Your Timeline";
 
-const postsStore = usePostsStore();
+const postsStore = usePostStore();
 const { loadedPosts, postsLoading } = storeToRefs(postsStore);
 const { fetchPosts } = postsStore;
 

@@ -1,12 +1,12 @@
 import { defineStore } from "pinia";
 import { mande, MandeInstance } from "mande";
 
-const postsApi: MandeInstance = mande("http://localhost:8080/api/posts");
+const postsApi: MandeInstance = mande("http://localhost:8080/api/post");
 
-export const usePostsStore = defineStore("posts", {
+export const usePostStore = defineStore("posts", {
   state: () => ({
-    loadedPosts: Array(),
-    postsLoading: true,
+    loadedPosts: Array<Post>(),
+    postsLoading: true
   }),
   actions: {
     async fetchPosts() {
@@ -25,6 +25,6 @@ export const usePostsStore = defineStore("posts", {
       } finally {
         this.postsLoading = false;
       }
-    },
-  },
+    }
+  }
 });

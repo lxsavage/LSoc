@@ -7,10 +7,10 @@ namespace Lsoc.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PostsController : ControllerBase
+public class PostController : ControllerBase
 {
     private readonly IPostsService _postsService;
-    public PostsController(IPostsService postsService)
+    public PostController(IPostsService postsService)
     {
         _postsService = postsService;
     }

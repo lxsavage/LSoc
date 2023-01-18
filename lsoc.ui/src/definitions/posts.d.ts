@@ -2,8 +2,6 @@ interface Post {
   postId: number;
   author: string;
   content: string;
-  likes: number;
-  dislikes: number;
   dateCreate: Date;
 }
 
