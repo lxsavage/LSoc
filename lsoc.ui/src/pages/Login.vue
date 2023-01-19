@@ -4,6 +4,10 @@
       <template #title>
         {{ name }}
       </template>
+      <template v-if="userStore.loginError" #subtitle>
+        <p class="p-text-danger">Error with sign in; please check your username and password, then try to sign in
+          again.</p>
+      </template>
       <template #content>
         <div>
           <span class="p-float-label mt-2">

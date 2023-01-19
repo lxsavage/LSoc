@@ -6,6 +6,7 @@ export const useUserStore = defineStore("user", {
   state: () => ({
     currentUser: {} as User,
     authenticated: false,
+    loginError: false,
     loading: false
   }),
   actions: {
@@ -14,6 +15,9 @@ export const useUserStore = defineStore("user", {
       if (user) {
         this.currentUser = reactive(user);
         this.authenticated = true;
+        this.loginError = false;
+      } else {
+        this.loginError = true;
       }
     },
     async logout() {

@@ -30,11 +30,17 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public async Task<UserViewModel?> Login([FromBody] SignInViewModel credentials)
     {
+        UserViewModel? user = null;
         if (!string.IsNullOrWhiteSpace(credentials.Username) && !string.IsNullOrWhiteSpace(credentials.Password))
-            return await _userService.Login(credentials);
-        
-        Response.StatusCode = 400;
-        return null;
+        {
+            user = await _userService.Login(credentials);
+            if (user == null) Response.StatusCode = 403;
+        }
+        else
+        {
+            Response.StatusCode = 400;
+        }
+        return user;
 
     }
 
