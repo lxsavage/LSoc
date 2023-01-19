@@ -1,5 +1,6 @@
 using Lsoc.Core.Services;
 using Lsoc.Core.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lsoc.API.Controllers;
@@ -41,5 +42,11 @@ public class UserController : ControllerBase
     public async Task Logout()
     {
         await _userService.Logout();
+    }
+
+    [HttpGet("me"), Authorize]
+    public async Task<UserViewModel?> Me()
+    {
+        return await _userService.Me();
     }
 }

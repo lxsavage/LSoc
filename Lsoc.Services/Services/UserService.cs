@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using AutoMapper;
 using Lsoc.Core;
 using Lsoc.Core.Services;
 using Lsoc.Core.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
@@ -13,15 +15,18 @@ public class UserService : IUserService
     private readonly IMapper _mapper;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly IHttpContextAccessor _httpContext;
 
     public UserService(
         IMapper mapper,
         UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager)
+        SignInManager<IdentityUser> signInManager,
+        IHttpContextAccessor httpContext)
     {
         _mapper = mapper;
         _userManager = userManager;
         _signInManager = signInManager;
+        _httpContext = httpContext;
     }
     
     public async Task Register(SignInViewModel credentials)
@@ -57,20 +62,28 @@ public class UserService : IUserService
     {
         if (string.IsNullOrWhiteSpace(credentials.Username) || string.IsNullOrWhiteSpace(credentials.Password)) return null;
 
-        var user = await _userManager.FindByNameAsync(credentials.Username);
-        if (user == null) return null;
+        var userIdentity = await _userManager.FindByNameAsync(credentials.Username);
+        if (userIdentity == null) return null;
 
         var passwordSignInOutcome =
-            await _signInManager.PasswordSignInAsync(user, credentials.Password, true, false);
+            await _signInManager.PasswordSignInAsync(userIdentity, credentials.Password, true, false);
 
         if (!passwordSignInOutcome.Succeeded) return null;
         
-        var mappedUser = _mapper.Map<UserViewModel>(user);
-        return mappedUser;
+        return _mapper.Map<UserViewModel>(userIdentity);
     }
 
     public async Task Logout()
     {
         await _signInManager.SignOutAsync();
+    }
+
+    public async Task<UserViewModel?> Me()
+    {
+        var userClaims = _httpContext?.HttpContext?.User;
+        if (userClaims == null) return null;
+        
+        var userIdentity = await _userManager.GetUserAsync(userClaims);
+        return userIdentity == null ? null : _mapper.Map<UserViewModel>(userIdentity);
     }
 }

@@ -1,10 +1,11 @@
 <template>
   <Navbar></Navbar>
-  <main class="main-container">
-    <router-view></router-view>
-  </main>
+  <div class="main-container">
+    <main class="mx-auto max-w-30rem">
+      <router-view></router-view>
+    </main>
+  </div>
 </template>
 
-<script setup lang="ts">
-import Navbar from "./components/_partial/Navbar.vue"
-</script>
+<script lang="ts" setup>
+import Navbar from "./components/_partial/Navbar.vue";</script>

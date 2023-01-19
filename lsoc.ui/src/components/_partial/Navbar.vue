@@ -5,12 +5,13 @@
 <script lang="ts" setup>
 import { SidebarMenu } from "vue-sidebar-menu";
 import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
+import { useUserStore } from "../../store/UserStore";
+import { reactive, watch } from "vue";
 
-// Placeholder: replace after implementing authentication
-const authenticated: boolean = false;
+const userStore = useUserStore();
 
 // Min w: 1110px
-const menu = [
+const menu = reactive([
   {
     header: "Lsoc"
   },
@@ -23,20 +24,32 @@ const menu = [
     title: "About",
     icon: "pi pi-fw pi-info-circle",
     href: "/about"
-  }
-];
-
-if (authenticated) {
-  menu.push({
+  },
+  {
     title: "Log Out",
     icon: "pi pi-fw pi-sign-out",
-    href: "/logout"
-  });
-} else {
-  menu.push({
+    href: "/login?logout=true",
+    needsAuth: true,
+    hidden: true
+  },
+  {
     title: "Log In",
     icon: "pi pi-fw pi-sign-in",
-    href: "/login"
-  });
-}
+    href: "/login",
+    needsNoAuth: true,
+    hidden: true
+  }
+]);
+
+// Workaround: Reactivity doesn't work on the vue-sidebar-menu's menu component, so use a watcher
+// to manually set hidden status for added properties needsAuth and needsNoAuth
+watch(userStore.$state, (state) => {
+  for (let item of menu) {
+    if (item.needsAuth) {
+      item.hidden = !state.authenticated;
+    } else if (item.needsNoAuth) {
+      item.hidden = state.authenticated;
+    }
+  }
+});
 </script>

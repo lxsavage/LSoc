@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,11 +8,12 @@ export default defineConfig({
     port: 8080,
     open: true,
     proxy: {
-      '/api': {
-        target: 'http://localhost:5017',
+      "/api": {
+        target: "http://localhost:5017",
         changeOrigin: true,
-        secure: false
+        secure: false,
+        ws: true
       }
     }
   }
-})
+});

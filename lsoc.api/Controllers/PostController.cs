@@ -1,6 +1,7 @@
 using Lsoc.Core.Models;
 using Lsoc.Core.Services;
 using Lsoc.Core.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lsoc.API.Controllers;
@@ -15,13 +16,13 @@ public class PostController : ControllerBase
         _postsService = postsService;
     }
     
-    [HttpPost]
+    [HttpPost, Authorize]
     public async Task<int> CreatePost([FromBody] CreatePostViewModel post)
     {
         return await _postsService.CreatePostAsync(post);
     }
     
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:int}"), Authorize]
     public async Task<Post?> GetPost([FromRoute] int id)
     {
         return await _postsService.GetPostAsync(id);
@@ -33,13 +34,13 @@ public class PostController : ControllerBase
         return await _postsService.GetTopPostsAsync(count);
     }
 
-    [HttpPatch("{id:int}")]
+    [HttpPatch("{id:int}"), Authorize]
     public async Task EditPost([FromRoute] int id, [FromBody] CreatePostViewModel post)
     {
         await _postsService.EditPostAsync(id, post);
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:int}"), Authorize]
     public async Task DeletePost([FromRoute] int id)
     {
         await _postsService.DeletePostAsync(id);

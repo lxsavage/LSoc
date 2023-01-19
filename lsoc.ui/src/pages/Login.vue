@@ -9,18 +9,18 @@
           <span class="p-float-label mt-2">
             <InputText
               id="username"
-              type="text"
               v-model="user.username"
               class="max-width-field"
+              type="text"
             ></InputText>
             <label for="username">Username</label>
           </span>
           <span class="p-float-label mt-5">
             <InputText
               id="password"
-              type="password"
               v-model="user.password"
               class="max-width-field"
+              type="password"
             ></InputText>
             <label for="password">Password</label>
           </span>
@@ -33,22 +33,38 @@
   </form>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
+import { useUserStore } from "../store/UserStore";
 import Card from "primevue/card";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 
-import { ref } from "vue";
+import { Ref, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
-const user = ref({
+const userStore = useUserStore();
+const router = useRouter();
+const route = useRoute();
+
+const name: string = "Log In";
+const user: Ref<UserLogin> = ref<UserLogin>({
   username: "",
-  password: "",
+  password: ""
 });
 
-const name = "Log In";
+async function attemptLogin() {
+  await userStore.login(user.value);
+  if (userStore.authenticated) {
+    await router.push({ path: "/" });
+  }
+}
 
-function attemptLogin() {
-  console.log(user);
+async function logout() {
+  await userStore.logout();
+}
+
+if (userStore.authenticated && route.query.logout) {
+  logout();
 }
 </script>
 
