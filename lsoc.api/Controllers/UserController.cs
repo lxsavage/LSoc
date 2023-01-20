@@ -24,7 +24,7 @@ public class UserController : ControllerBase
             return;
         }
 
-        await _userService.Register(credentials);
+        await _userService.RegisterAsync(credentials);
     }
 
     [HttpPost("login")]
@@ -33,7 +33,7 @@ public class UserController : ControllerBase
         UserViewModel? user = null;
         if (!string.IsNullOrWhiteSpace(credentials.Username) && !string.IsNullOrWhiteSpace(credentials.Password))
         {
-            user = await _userService.Login(credentials);
+            user = await _userService.LoginAsync(credentials);
             if (user == null) Response.StatusCode = 403;
         }
         else
@@ -47,12 +47,12 @@ public class UserController : ControllerBase
     [HttpPost("logout")]
     public async Task Logout()
     {
-        await _userService.Logout();
+        await _userService.LogoutAsync();
     }
 
     [HttpGet("me"), Authorize]
     public async Task<UserViewModel?> Me()
     {
-        return await _userService.Me();
+        return await _userService.GetMeAsync();
     }
 }

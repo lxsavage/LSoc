@@ -1,14 +1,31 @@
 <template>
-  <SidebarMenu :menu="menu" collapsed hide-toggle></SidebarMenu>
+  <div :hidden="!props.visible">
+    <SidebarMenu :menu="menu" collapsed hide-toggle @item-click="handleItemClick"></SidebarMenu>
+    <Dialog :closable="false" :draggable="false" :visible="logoutModalActive" header="Log Out Confirmation" modal
+            position="topleft">
+      Are you sure you want to log out?
+      <template #footer>
+        <Button class="p-button-text p-text-secondary" label="No" @click="handleLogoutModalResponse(false)" />
+        <Button class="p-button-danger" label="Yes" @click="handleLogoutModalResponse(true)" />
+      </template>
+    </Dialog>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { SidebarMenu } from "vue-sidebar-menu";
 import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
-import { useUserStore } from "../../store/UserStore";
-import { reactive, watch } from "vue";
+import { defineProps, reactive, ref } from "vue";
+import Dialog from "primevue/dialog";
+import Button from "primevue/button";
+import { useRouter } from "vue-router";
 
-const userStore = useUserStore();
+const props = defineProps<{
+  visible?: boolean
+}>();
+const router = useRouter();
+
+const logoutModalActive = ref(false);
 
 // Min w: 1110px
 const menu = reactive([
@@ -21,35 +38,30 @@ const menu = reactive([
     href: "/"
   },
   {
-    title: "About",
+    title: "New Post",
+    icon: "pi pi-fw pi-pencil",
+    href: "/new"
+  },
+  {
+    title: "About This Project",
     icon: "pi pi-fw pi-info-circle",
     href: "/about"
   },
   {
     title: "Log Out",
-    icon: "pi pi-fw pi-sign-out",
-    href: "/login?logout=true",
-    needsAuth: true,
-    hidden: true
-  },
-  {
-    title: "Log In",
-    icon: "pi pi-fw pi-sign-in",
-    href: "/login",
-    needsNoAuth: true,
-    hidden: true
+    icon: "pi pi-fw pi-sign-out"
   }
 ]);
 
-// Workaround: Reactivity doesn't work on the vue-sidebar-menu's menu component, so use a watcher
-// to manually set hidden status for added properties needsAuth and needsNoAuth
-watch(userStore.$state, (state) => {
-  for (let item of menu) {
-    if (item.needsAuth) {
-      item.hidden = !state.authenticated;
-    } else if (item.needsNoAuth) {
-      item.hidden = state.authenticated;
-    }
+function handleItemClick(event: PointerEvent, item: { title: string }) {
+  logoutModalActive.value = item.title === "Log Out";
+}
+
+function handleLogoutModalResponse(confirmed: boolean) {
+  logoutModalActive.value = false;
+
+  if (confirmed) {
+    router.push({ path: "/login", query: { logout: "true" } });
   }
-});
+}
 </script>

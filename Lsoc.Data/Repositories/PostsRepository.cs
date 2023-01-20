@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Lsoc.Core.Models;
 using Lsoc.Core.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lsoc.Data.Repositories;
@@ -10,11 +11,6 @@ public class PostsRepository : Repository<Post>, IPostsRepository
     public PostsRepository(DbContext Context)
         : base(Context)
     {
-    }
-
-    public async Task<Post?> GetPostByIdAsync(int PostId)
-    {
-        return await LsocDbContext.Posts.FindAsync(PostId);
     }
 
     public async Task<int> CreatePostAsync(Post post)
@@ -32,20 +28,13 @@ public class PostsRepository : Repository<Post>, IPostsRepository
         await LsocDbContext.SaveChangesAsync();
     }
 
-    public async Task DeletePostByIdAsync(int id)
+    public async Task DeletePostByIdAsync(int id, IdentityUser deletedBy)
     {
         var post = await LsocDbContext.Posts.FindAsync(id);
-        LsocDbContext.Posts.Remove(post);
+        //LsocDbContext.Posts.Remove(post);
+        post.IsDeleted = true;
+        post.DeletedBy = deletedBy;
         await LsocDbContext.SaveChangesAsync();
-    }
-
-    public async Task<List<Post?>> GetTopPostsAsync(int count)
-    {
-        return await LsocDbContext.Posts
-            .AsQueryable()
-            .OrderByDescending(m => m.DateModified)
-            .Take(count)
-            .ToListAsync();
     }
 
     private LsocDbContext LsocDbContext => Context as LsocDbContext;

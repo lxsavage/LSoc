@@ -1,11 +1,9 @@
 using System.Security.Claims;
 using AutoMapper;
-using Lsoc.Core;
 using Lsoc.Core.Services;
 using Lsoc.Core.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 
 namespace Lsoc.Services.Services;
@@ -15,21 +13,21 @@ public class UserService : IUserService
     private readonly IMapper _mapper;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly IHttpContextAccessor _httpContext;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public UserService(
         IMapper mapper,
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
-        IHttpContextAccessor httpContext)
+        IHttpContextAccessor httpContextAccessor)
     {
         _mapper = mapper;
         _userManager = userManager;
         _signInManager = signInManager;
-        _httpContext = httpContext;
+        _httpContextAccessor = httpContextAccessor;
     }
     
-    public async Task Register(SignInViewModel credentials)
+    public async Task RegisterAsync(SignInViewModel credentials)
     {
         if (string.IsNullOrWhiteSpace(credentials.Username) || string.IsNullOrWhiteSpace(credentials.Password)) return;
 
@@ -58,7 +56,7 @@ public class UserService : IUserService
         Console.WriteLine($"User {credentials.Username} has been successfully created!");
     }
 
-    public async Task<UserViewModel?> Login(SignInViewModel credentials)
+    public async Task<UserViewModel?> LoginAsync(SignInViewModel credentials)
     {
         if (string.IsNullOrWhiteSpace(credentials.Username) || string.IsNullOrWhiteSpace(credentials.Password)) return null;
 
@@ -68,22 +66,30 @@ public class UserService : IUserService
         var passwordSignInOutcome =
             await _signInManager.PasswordSignInAsync(userIdentity, credentials.Password, true, false);
 
-        if (!passwordSignInOutcome.Succeeded) return null;
-        
-        return _mapper.Map<UserViewModel>(userIdentity);
+        return passwordSignInOutcome.Succeeded
+            ? _mapper.Map<UserViewModel>(userIdentity)
+            : null;
     }
 
-    public async Task Logout()
-    {
-        await _signInManager.SignOutAsync();
-    }
+    public async Task LogoutAsync() => await _signInManager.SignOutAsync();
 
-    public async Task<UserViewModel?> Me()
+    public async Task<UserViewModel?> GetMeAsync() => _httpContextAccessor?.HttpContext?.User != null
+        ? _mapper.Map<UserViewModel>(await GetCurrentUserAsync())
+        : null;
+    
+    public async Task<IdentityUser> GetCurrentUserAsync()
     {
-        var userClaims = _httpContext?.HttpContext?.User;
-        if (userClaims == null) return null;
+        var userClaims = _httpContextAccessor?.HttpContext?.User;
+        if (userClaims == null) throw new KeyNotFoundException();;
         
         var userIdentity = await _userManager.GetUserAsync(userClaims);
-        return userIdentity == null ? null : _mapper.Map<UserViewModel>(userIdentity);
+        if (userIdentity == null) throw new KeyNotFoundException();;
+
+        return userIdentity;
+    }
+    
+    public async Task<IdentityUser?> GetUserByIdAsync(string userId)
+    {
+        return await _userManager.FindByIdAsync(userId);
     }
 }

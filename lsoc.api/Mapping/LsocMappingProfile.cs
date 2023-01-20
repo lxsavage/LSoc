@@ -10,6 +10,8 @@ public class LsocMappingProfile : Profile
     public LsocMappingProfile()
     {
         CreateMap<CreatePostViewModel, Post>();
+        CreateMap<Post, PostViewModel>()
+            .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.AuthorId));
 
         CreateMap<IdentityUser, UserViewModel>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))

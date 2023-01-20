@@ -1,6 +1,7 @@
 interface Post {
   postId: number;
-  author: string;
+  authorId: string;
+  authorName: string;
   content: string;
   dateCreate: Date;
 }

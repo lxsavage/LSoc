@@ -3,6 +3,7 @@ using System;
 using Lsoc.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lsoc.Data.Migrations
 {
     [DbContext(typeof(LsocDbContext))]
-    partial class LsocDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230120052741_AddAuthorFieldToPost")]
+    partial class AddAuthorFieldToPost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
@@ -33,12 +36,6 @@ namespace Lsoc.Data.Migrations
                     b.Property<DateTime>("DatePosted")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("DeletedUserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasMaxLength(144)
@@ -47,8 +44,6 @@ namespace Lsoc.Data.Migrations
                     b.HasKey("PostId");
 
                     b.HasIndex("AuthorId");
-
-                    b.HasIndex("DeletedUserId");
 
                     b.ToTable("Posts", (string)null);
                 });
@@ -253,13 +248,7 @@ namespace Lsoc.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "DeletedBy")
-                        .WithMany()
-                        .HasForeignKey("DeletedUserId");
-
                     b.Navigation("Author");
-
-                    b.Navigation("DeletedBy");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -23,15 +23,15 @@ public class PostController : ControllerBase
     }
     
     [HttpGet("{id:int}"), Authorize]
-    public async Task<Post?> GetPost([FromRoute] int id)
+    public async Task<PostViewModel?> GetPost([FromRoute] int id)
     {
         return await _postsService.GetPostAsync(id);
     }
 
     [HttpGet]
-    public async Task<List<Post?>> GetPosts([FromQuery] int count = 1000)
+    public async Task<List<PostViewModel?>> GetPosts()
     {
-        return await _postsService.GetTopPostsAsync(count);
+        return await _postsService.GetPostsAsync();
     }
 
     [HttpPatch("{id:int}"), Authorize]

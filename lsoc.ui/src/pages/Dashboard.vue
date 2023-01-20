@@ -11,22 +11,22 @@
 
 <script lang="ts" setup>
 import { onBeforeMount } from "vue";
-import { usePostStore } from "../store/PostStore";
 import { storeToRefs } from "pinia";
+import { usePostStore } from "../store/PostStore";
+import { useUserStore } from "../store/UserStore";
 
 import TimelineView from "../components/posts/TimelineView.vue";
 import ProgressBar from "primevue/progressbar";
-import { useUserStore } from "../store/UserStore";
 
-const name = "'s Timeline";
+const name: string = "'s Timeline";
 
 const postsStore = usePostStore();
 const userStore = useUserStore();
+
 const { loadedPosts, postsLoading } = storeToRefs(postsStore);
-const { fetchPosts } = postsStore;
 
 // Fetch all posts automatically upon navigating to the dashboard
 onBeforeMount(async () => {
-  await fetchPosts();
+  await postsStore.fetchPosts();
 });
 </script>

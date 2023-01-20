@@ -9,7 +9,7 @@
   </p>
   <p>
     This project aims to implement a basic social media message board-style
-    forum that can be hosted on a server for both local wifi messaging, all the
+    forum that can be hosted on a server for both local WiFi messaging, all the
     way up to being scalable to intranet application-level uses.
   </p>
   <h2>Technology Used</h2>
@@ -66,6 +66,6 @@
   </p>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 const name = "About";
 </script>

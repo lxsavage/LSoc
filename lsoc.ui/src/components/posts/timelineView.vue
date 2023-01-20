@@ -1,8 +1,8 @@
 <template>
-  <div v-for="post in props.posts" v-if="props.posts" id="timeline-view">
+  <div v-for="post in props.posts" v-if="props.posts.length > 0" id="timeline-view">
     <Divider></Divider>
     <h3>
-      Author
+      {{ post.authorName }}
     </h3>
     <p>
       <b>
@@ -28,7 +28,11 @@
       ></Button>
     </div>
   </div>
+
   <Divider></Divider>
+  <h3 v-if="props.posts.length === 0" class="p-text-secondary text-center">
+    Hmm... it seems as though no posts are here. Create one using the button on the sidebar.
+  </h3>
   <ScrollTop />
 </template>
 
@@ -37,5 +41,7 @@ import Divider from "primevue/divider";
 import Button from "primevue/button";
 import ScrollTop from "primevue/scrolltop";
 
-const props = defineProps(["posts"]);
+const props = defineProps<{
+  posts: Post[]
+}>();
 </script>

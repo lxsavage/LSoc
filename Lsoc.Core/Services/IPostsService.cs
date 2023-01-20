@@ -10,7 +10,7 @@ public interface IPostsService
     /// </summary>
     /// <param name="id">The ID of the post to retrieve</param>
     /// <returns>A model representing the post if found, otherwise null</returns>
-    Task<Post?> GetPostAsync(int id);
+    Task<PostViewModel?> GetPostAsync(int id);
     
     /// <summary>
     /// Attempts to create a new post as the currently-logged-in user
@@ -31,13 +31,12 @@ public interface IPostsService
     /// </summary>
     /// <param name="id">The ID of the post to delete</param>
     Task DeletePostAsync(int id);
-    
+
     /// <summary>
-    /// Retrieves the most recent posts made
+    /// Retrieves all posts
     /// </summary>
-    /// <param name="count">The amount of posts to retrieve</param>
     /// <returns>
     /// A list of models representing each of the <b>count</b> most recent posts
     /// </returns>
-    Task<List<Post?>> GetTopPostsAsync(int count);
+    Task<List<PostViewModel?>> GetPostsAsync();
 }

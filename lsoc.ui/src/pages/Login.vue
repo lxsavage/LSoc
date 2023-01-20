@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="attemptLogin">
-    <Card>
+    <Card role="form">
       <template #title>
         {{ name }}
       </template>
@@ -63,12 +63,9 @@ async function attemptLogin() {
   }
 }
 
-async function logout() {
-  await userStore.logout();
-}
-
+// If the user was brought here through the logout button (will have the logout query param set to true), then log them out
 if (userStore.authenticated && route.query.logout) {
-  logout();
+  userStore.logout();
 }
 </script>
 
