@@ -5,11 +5,6 @@ export default [
     component: () => import("../pages/Dashboard.vue")
   },
   {
-    path: "/new",
-    name: "New Post",
-    component: () => import("../pages/Create.vue")
-  },
-  {
     path: "/about",
     name: "About",
     component: () => import("../pages/About.vue")

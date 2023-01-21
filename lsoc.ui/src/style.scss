@@ -1,12 +1,5 @@
-@import 'primeflex/primeflex.scss';
-
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-}
-
-.main-container {
-  @include styleclass('container');
-  margin-left: 65px;
 }
 
 .p-text-danger {

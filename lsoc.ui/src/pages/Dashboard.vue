@@ -1,32 +1,28 @@
 <template>
   <h1>{{ userStore.authenticated ? userStore.currentUser.username : "User" }}{{ name }}</h1>
-
-  <ProgressBar
-    v-if="postsLoading"
-    mode="indeterminate"
-    style="height: 0.5em"
-  ></ProgressBar>
-  <TimelineView :posts="loadedPosts"></TimelineView>
+  <PostCreationTextbox></PostCreationTextbox>
+  <TimelineView :loading="postsStore.postsLoading" :posts="postsStore.loadedPosts"></TimelineView>
 </template>
 
 <script lang="ts" setup>
 import { onBeforeMount } from "vue";
-import { storeToRefs } from "pinia";
 import { usePostStore } from "../store/PostStore";
 import { useUserStore } from "../store/UserStore";
+import { useLoadingBar } from "naive-ui";
 
 import TimelineView from "../components/posts/TimelineView.vue";
-import ProgressBar from "primevue/progressbar";
+import PostCreationTextbox from "../components/posts/PostCreationTextbox.vue";
 
 const name: string = "'s Timeline";
 
+const loadingBar = useLoadingBar();
 const postsStore = usePostStore();
 const userStore = useUserStore();
 
-const { loadedPosts, postsLoading } = storeToRefs(postsStore);
-
 // Fetch all posts automatically upon navigating to the dashboard
 onBeforeMount(async () => {
+  loadingBar.start();
   await postsStore.fetchPosts();
+  loadingBar.finish();
 });
 </script>

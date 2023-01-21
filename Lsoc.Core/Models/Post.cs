@@ -31,6 +31,7 @@ public class Post
     
     public bool IsDeleted { get; set; }
     
+    // This field is currently unused, but is kept in for future admin role auditing
     [ForeignKey("DeletedUserId")]
     public IdentityUser DeletedBy { get; set; }
 }

@@ -10,11 +10,9 @@ import routes from "./router/index";
 import { createPinia, Pinia } from "pinia";
 
 // Styling
-import PrimeVue from "primevue/config";
-import "primevue/resources/themes/saga-blue/theme.css";
-import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
 import "./style.scss";
+
 import { useUserStore } from "./store/UserStore";
 
 // Initialize plugins
@@ -37,5 +35,4 @@ router.beforeEach(async (to, from, next) => {
 // Include plugins in app, then mount the app to the webpage
 app.use(router);
 app.use(pinia);
-app.use(PrimeVue);
 app.mount("#app");

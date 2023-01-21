@@ -38,7 +38,13 @@ public class PostService : IPostsService
     public async Task DeletePostAsync(int id)
     {
         var user = await _userService.GetCurrentUserAsync();
-        await _unitOfWork.Posts.DeletePostByIdAsync(id, user);
+        var post = await GetPostAsync(id);
+
+        // Prevent someone from deleting someone else's post
+        if (user.Id == post.AuthorId)
+        {
+            await _unitOfWork.Posts.DeletePostByIdAsync(id, user);
+        }
     }
 
     public async Task<PostViewModel?> GetPostAsync(int id)
@@ -52,7 +58,7 @@ public class PostService : IPostsService
     
     public async Task<List<PostViewModel?>> GetPostsAsync()
     {
-        var posts = await _unitOfWork.Posts.GetAllAsync();
+        var posts = await _unitOfWork.Posts.GetActivePostsAsync();
         var mappedPosts = _mapper.Map<List<PostViewModel>>(posts);
         foreach (var mappedPost in mappedPosts)
         {

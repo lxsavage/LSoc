@@ -1,66 +1,61 @@
 <template>
-  <form @submit.prevent="attemptLogin">
-    <Card role="form">
-      <template #title>
-        {{ name }}
+  <n-form :disabled="submitting" :model="user">
+    <n-card :title="name">
+      <!-- Form Body -->
+      <n-form-item label="Username" path="username">
+        <n-input v-model:value="user.username" placeholder="JSmith" type="text"></n-input>
+      </n-form-item>
+      <n-form-item label="Password" path="password">
+        <n-input v-model:value="user.password" placeholder="Password" type="password"></n-input>
+      </n-form-item>
+
+      <!-- Error Section -->
+      <template v-if="userStore.loginError" #footer>
+        <p class="p-text-danger">
+          Error with sign in; please check your username and password, then try to sign in again.
+        </p>
       </template>
-      <template v-if="userStore.loginError" #subtitle>
-        <p class="p-text-danger">Error with sign in; please check your username and password, then try to sign in
-          again.</p>
+
+      <!-- Form Action -->
+      <template #action>
+        <n-button :disabled="submitting" type="primary" @click="attemptLogin">Sign In</n-button>
       </template>
-      <template #content>
-        <div>
-          <span class="p-float-label mt-2">
-            <InputText
-              id="username"
-              v-model="user.username"
-              class="max-width-field"
-              type="text"
-            ></InputText>
-            <label for="username">Username</label>
-          </span>
-          <span class="p-float-label mt-5">
-            <InputText
-              id="password"
-              v-model="user.password"
-              class="max-width-field"
-              type="password"
-            ></InputText>
-            <label for="password">Password</label>
-          </span>
-        </div>
-      </template>
-      <template #footer>
-        <Button label="Sign In" type="submit"></Button>
-      </template>
-    </Card>
-  </form>
+    </n-card>
+  </n-form>
 </template>
 
 <script lang="ts" setup>
 import { useUserStore } from "../store/UserStore";
-import Card from "primevue/card";
-import InputText from "primevue/inputtext";
-import Button from "primevue/button";
-
-import { Ref, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+
+import { NButton, NCard, NForm, NFormItem, NInput, useLoadingBar } from "naive-ui";
+import { ref } from "vue";
+
+const loadingBar = useLoadingBar();
 
 const userStore = useUserStore();
 const router = useRouter();
 const route = useRoute();
 
 const name: string = "Log In";
-const user: Ref<UserLogin> = ref<UserLogin>({
+const submitting = ref(false);
+const user = ref({
   username: "",
   password: ""
 });
 
 async function attemptLogin() {
+  submitting.value = true;
+  loadingBar.start();
+
   await userStore.login(user.value);
   if (userStore.authenticated) {
+    loadingBar.finish();
     await router.push({ path: "/" });
   }
+
+  loadingBar.error();
+  submitting.value = false;
 }
 
 // If the user was brought here through the logout button (will have the logout query param set to true), then log them out
@@ -68,9 +63,3 @@ if (userStore.authenticated && route.query.logout) {
   userStore.logout();
 }
 </script>
-
-<style>
-.max-width-field {
-  width: 100%;
-}
-</style>

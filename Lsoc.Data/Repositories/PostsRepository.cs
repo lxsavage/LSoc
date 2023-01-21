@@ -37,5 +37,13 @@ public class PostsRepository : Repository<Post>, IPostsRepository
         await LsocDbContext.SaveChangesAsync();
     }
 
+    public async Task<List<Post>> GetActivePostsAsync()
+    {
+        return await LsocDbContext.Posts
+            .Where(m => !m.IsDeleted)
+            .OrderByDescending(m => m.DateModified)
+            .ToListAsync();
+    }
+
     private LsocDbContext LsocDbContext => Context as LsocDbContext;
 }

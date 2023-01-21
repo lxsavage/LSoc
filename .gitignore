@@ -144,4 +144,4 @@ msbuild.wrn
 # Visual Studio 2015
 .vs/
 
-lsoc.db
+lsoc.sqlite3

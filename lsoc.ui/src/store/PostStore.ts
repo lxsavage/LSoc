@@ -25,6 +25,22 @@ export const usePostStore = defineStore("posts", {
       } finally {
         this.postsLoading = false;
       }
+    },
+    async createPost(message: string) {
+      try {
+        await postsApi.post("", { message });
+        await this.fetchPosts();
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async deletePost(postId: number) {
+      try {
+        await postsApi.delete(`/${postId}`);
+        await this.fetchPosts();
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 });
